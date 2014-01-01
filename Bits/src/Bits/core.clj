@@ -29,5 +29,9 @@
 
 (.getProtectionDomain(.getClass
                        "Hello" ))
+(macroexpand (.. "Hello" getClass getProtectionDomain))
+(prettyprint (System/getProperties))
+
+
 
 
