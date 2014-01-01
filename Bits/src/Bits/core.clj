@@ -25,4 +25,9 @@
   alter accounts conj(Account. "FJH" 20000.00))
 (class Account)
 (Account. "ABC" 123)
+(deref accounts)
+
+(.getProtectionDomain(.getClass
+                       "Hello" ))
+
 
