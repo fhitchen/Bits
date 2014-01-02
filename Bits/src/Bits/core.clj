@@ -22,16 +22,29 @@
 (dosync
   alter accounts conj(->Account "CLJ" 1000.00))
 (dosync
-  alter accounts conj(Account. "FJH" 20000.00))
+  alter accounts conj (Account. "FJH" 20000.00))
 (class Account)
 (Account. "ABC" 123)
 (deref accounts)
+@accounts
 
 (.getProtectionDomain(.getClass
                        "Hello" ))
 (macroexpand (.. "Hello" getClass getProtectionDomain))
-(prettyprint (System/getProperties))
+(pprint (System/getProperties))
+(use 'clojure.pprint)
 
+(.start (new Thread (fn [] (println "Hello" (Thread/currentThread)))))
 
+(def visitors (atom #{}))
+(swap! visitors conj "Stu")
+(deref visitors)
+@visitors
 
+(defn hello [name]
+  (swap! visitors conj name)
+  (str "Hello, " name)
+  )
+(hello "Adam")
+@visitors
 

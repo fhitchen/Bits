@@ -1,6 +1,6 @@
 # Bits
 
-A Clojure library designed to ... well, that part is up to you.
+A collection of Clojure library designed to ... well, that part is up to you.
 
 ## Usage
 
