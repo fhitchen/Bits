@@ -45,6 +45,6 @@
   (swap! visitors conj name)
   (str "Hello, " name)
   )
-(hello "Adam")
+(hello "Adam Hichens")
 @visitors
 
