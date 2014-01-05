@@ -77,3 +77,44 @@
     [[bottom left] [top left] [top right] [bottom right]]))
 
 (square-corners 0 0 10)
+
+(defn indexed [coll] (map-indexed vector coll))
+(map-indexed vector "asdf")
+(indexed "asdf")
+(defn index-filter [pred coll]
+  (when pred
+    (for [[idx elt] (indexed coll) :when (pred elt)] idx)))
+(index-filter #{\a \b} "zzzcab")
+(index-filter #{\s \a} "asdf")
+
+(index-filter #{1 2 3} [ 10 2 5 19 3])
+(use 'clojure.string)
+(index-filter #{"one" "two" "three"} (split "Once upon a time two amdocs programmers once wrote three programs." #"\s"))
+(nth (index-filter #{:h} [:t :t :h :t :h :t :t :t :h :h]) 2)
+(defn ^String shout [^String s] (.toUpperCase s))
+(shout "Shit")
+(meta #'shout)
+(meta #'str)
+
+
+(defn get-sequence
+  "Take 9 char BAN id, discard the check digit and extract the actual # for the range check"
+  [nn]
+  (if (< (count nn) 9)
+    (errlog-timestamped (str "BAN id '" nn "' is less than 9 chars, can not process."))
+    (let [s (subs nn 0 8)
+          n (reverse s)]
+      (if (= \0 (first n))
+        s
+        (apply str n)))))
+
+(get-sequence "100000000")
+
+(defn whole-numbers [] (iterate inc 1))
+(take 10 ( whole-numbers))
+(take 10 (filter even? (whole-numbers)))
+(take 10 (filter odd? (whole-numbers)))
+(interleave (whole-numbers) ["a" "b" "c" "d"])
+
+(take-while (complement #{\a\e\i\o\u}) "the-quick-brown-fox")
+(drop-while (complement #{\a\e\i\o\u}) "the-quick-brown-fox")
