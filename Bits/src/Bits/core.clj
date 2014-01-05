@@ -141,3 +141,68 @@
 
 (map #(.getName %) (seq (.listFiles (File. "."))))
 (map #(.getName %) (.listFiles (File. ".")))
+
+(count (file-seq (File. ".")))
+
+(map #(.lastModified %) (.listFiles (File. ".")))
+
+(defn minutes-to-millis [mins] (* mins 1000 60))
+(minutes-to-millis 1)
+(defn recently-modified? [file]
+  (> (.lastModified file)
+     (- (System/currentTimeMillis) (minutes-to-millis 30))))
+
+(map #(.getCanonicalPath %) (filter recently-modified? (file-seq (File. "."))))
+
+(use '[clojure.java.io :only (reader)])
+(with-open [r (reader "/Users/fhitchen/git/Bits/Bits/src/Bits/core.clj")]
+  (count (line-seq r)))
+
+(defn non-blank? [line] (if (re-find #"\S" line) true false))
+(defn non-svn? [file] (not (.contains (.toString file) ".svn")))
+(defn clojure-source? [file] (.endsWith (.toString file) ".clj"))
+
+(defn clojure-loc [base-file]
+  (reduce
+    +
+    (for [file (file-seq base-file)
+          :when (and (clojure-source? file) (non-svn? file))]
+      (with-open [rdr (reader file)]
+        (println (.getName file))
+        (count (filter non-blank? (line-seq rdr)))))))
+  
+
+(clojure-loc (java.io.File. "/Users/fhitchen/Downloads/code"))
+
+(use '[clojure.xml :only (parse)])
+
+(xml-seq (parse (java.io.File. "/Users/fhitchen/Downloads/code/data/sequences/compositions.xml")))
+
+(for [x (xml-seq (parse (java.io.File. "/Users/fhitchen/Downloads/code/data/sequences/compositions.xml")))
+      :when (= :composition (:tag x))]
+  (:composer (:attrs x)))
+
+(peek '(1 2 3))
+(pop '(1 2 3))
+(rest '())
+(pop '())
+(peek [1 2 3])
+(pop [ 1 2 3])
+(get [:a :b :c] 1)
+(get [:a :b :c] 5)
+([:a :b :c] 1)
+([:a :b :c] 5)
+(assoc [0 1 2 3 4] 2 :two) 
+(subvec [1 2 3 4 5] 3)
+(subvec [1 2 3 4 5] 1 3)
+(take 2 (drop 1 [1 2 3 4 5]))
+(get {:sundance "spaniel" :darwin "beagle"} :darwin)
+(get {:sundance "spaniel" :darwin "beagle"} :snoopy)
+({:sundance "spaniel" :darwin "beagle"} :darwin)
+(:darwin {:sundance "spaniel" :darwin "beagle"})
+(:snoopy {:sundance "spaniel" :darwin "beagle"})
+(def score {:stu nil :joey 100})
+(:stu score)
+(contains? score :stu)
+(get score :stu :score-not-found)
+(get score :aaron :score-not-found)
