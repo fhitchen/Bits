@@ -118,3 +118,26 @@
 
 (take-while (complement #{\a\e\i\o\u}) "the-quick-brown-fox")
 (drop-while (complement #{\a\e\i\o\u}) "the-quick-brown-fox")
+
+(def x (for [i (range 10)] (do (println i) i)))
+(doall x)
+(dorun x)
+(first (.getBytes "hello"))
+(rest (.getBytes "hello"))
+(cons (int \h) (.getBytes "ello"))
+(first (System/getProperties))
+(rest (System/getProperties))
+(reverse "hello")
+(apply str (reverse "hello"))
+(re-seq #"\w+" "The quick brown fox")
+(sort (re-seq #"\w+" "The quick brown fox"))
+(drop 2 (re-seq #"\w+" "The quick brown fox"))
+(map #(.toUpperCase %) (re-seq #"\w+" "The quick brown fox"))
+
+(import '(java.io File))
+(.listFiles (File. "."))
+
+(seq (.listFiles (File. ".")))
+
+(map #(.getName %) (seq (.listFiles (File. "."))))
+(map #(.getName %) (.listFiles (File. ".")))
