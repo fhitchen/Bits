@@ -206,3 +206,57 @@
 (contains? score :stu)
 (get score :stu :score-not-found)
 (get score :aaron :score-not-found)
+
+(def song {:name "Agnus Dei"
+           :artist "Krzysztof Penderecki"
+           :album "Polish Requiem"
+           :genre "Classical"})
+
+(assoc song :kind "MPEG Audio File")
+(dissoc song :genre)
+(select-keys song [:name :artist])
+(merge song {:size 8118166 :time 507245})
+
+(merge-with 
+   concat 
+   {:flintstone, ["Fred"], :rubble ["Barney"]}
+   {:flintstone, ["Wilma"], :rubble ["Betty"]}
+   {:flintstone, ["Pebbles"], :rubble ["Bam-Bam"]})
+
+(concat {:f ["f"] :b ["b"]} {:f ["a"] :b ["c"]})
+
+;sets
+(use 'clojure.set)
+(def languages #{"java" "c" "d" "clojure"})
+(def beverages #{"java" "chai" "pop"})
+(union languages beverages)
+(difference languages beverages)
+(intersection languages beverages)
+(select #(= 1 (.length %)) languages)
+
+
+(def compositions 
+  #{{:name "The Art of the Fugue" :composer "J. S. Bach"}
+    {:name "Musical Offering" :composer "J. S. Bach"}
+    {:name "Requiem" :composer "Giuseppe Verdi"}
+    {:name "Requiem" :composer "W. A. Mozart"}})
+(def composers
+  #{{:composer "J. S. Bach" :country "Germany"}
+    {:composer "W. A. Mozart" :country "Austria"}
+    {:composer "Giuseppe Verdi" :country "Italy"}})
+(def nations
+  #{{:nation "Germany" :language "German"}
+    {:nation "Austria" :language "German"}
+    {:nation "Italy" :language "Italian"}})
+
+(rename compositions {:name :title})
+(select #(= (:name %) "Requiem") compositions)
+(project compositions [:name])
+(for [m compositions c composers] (concat m c))
+(join compositions composers)
+(join composers nations {:country :nation})
+(project
+  (join
+    (select #(= (:name %) "Requiem") compositions)
+    composers)
+  [:country])
