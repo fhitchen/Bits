@@ -260,3 +260,29 @@
     (select #(= (:name %) "Requiem") compositions)
     composers)
   [:country])
+
+(defrecord Message [user text])
+(def messages (ref ()))
+(def backup-agent (agent "messages-backup.clj"))
+
+(defn add-messages-with-backup [msg]
+  (dosync
+    (let [snapshot (commute messages conj msg)]
+      (send-off backup-agent (fn [filename]
+                               (spit filename snapshot)
+                               filename))
+                snapshot)))
+
+(add-messages-with-backup (Message. "John" "Message One"))
+(add-messages-with-backup (Message. "Jill" "Message Two"))
+
+(def ^:dynamic foo 10)
+(meta foo)
+foo
+(.start (Thread. (fn [] (println foo))))
+
+(binding [foo 42] foo)
+(defn print-foo [] (println foo))
+(print-foo)
+(let [foo "let foo"] (print-foo))
+(binding [foo "bound foo"] (print-foo))
